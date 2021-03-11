@@ -1,5 +1,7 @@
 package com.example.mybookshoppostgrenext.data;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -14,6 +16,7 @@ public class Balance_Transaction {
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
 
+    @Type(type="org.hibernate.type.LocalDateTimeType")
     private LocalDateTime time;
     private Double value;
     //private Integer book_id;

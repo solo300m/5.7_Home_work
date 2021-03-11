@@ -1,6 +1,8 @@
 package com.example.mybookshoppostgrenext.data;
 
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 enum EMUN{
@@ -36,7 +38,7 @@ public class User_Contact {
     private Byte approved;
 
     private Integer code_trials;
-
+    @Type(type="org.hibernate.type.LocalDateTimeType")
     private LocalDateTime code_time;
 
     private String contact;

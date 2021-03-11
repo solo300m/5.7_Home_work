@@ -16,6 +16,7 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Type(type="org.hibernate.type.LocalDateType")
     private LocalDate pub_date;
     private Byte is_bestseller;
     private String slug;

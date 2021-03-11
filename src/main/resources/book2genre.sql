@@ -1,4 +1,4 @@
-insert into book_two_genre(book_id, genre_id) values (1,2);
+insert into book_two_genre(book_id, genre_id) values (1,1);
 insert into book_two_genre(book_id, genre_id) values (2,3);
 insert into book_two_genre(book_id, genre_id) values (3,5);
 insert into book_two_genre(book_id, genre_id) values (4,6);

@@ -1,5 +1,7 @@
 package com.example.mybookshoppostgrenext.data;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 @Entity
@@ -8,6 +10,7 @@ public class Book2User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Type(type="org.hibernate.type.LocalDateTimeType")
     private LocalDateTime time;
     //private Integer type_id;
     @ManyToOne

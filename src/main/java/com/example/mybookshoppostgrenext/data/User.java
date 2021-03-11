@@ -1,5 +1,7 @@
 package com.example.mybookshoppostgrenext.data;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String hash;
+    @Type(type="org.hibernate.type.LocalDateTimeType")
     private LocalDateTime reg_time;
     private Double balance;
     private String user_name;

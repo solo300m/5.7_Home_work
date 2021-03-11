@@ -1,5 +1,7 @@
 package com.example.mybookshoppostgrenext.data;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -17,6 +19,7 @@ public class Book_Review_Like {
     @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
+    @Type(type="org.hibernate.type.LocalDateTimeType")
     private LocalDateTime time;
     private Byte value;
 
