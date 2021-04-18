@@ -4,14 +4,15 @@ import com.example.mybookshoppostgrenext.Service.AuthorService;
 import com.example.mybookshoppostgrenext.Service.BookService;
 import com.example.mybookshoppostgrenext.Service.GenreService;
 import com.example.mybookshoppostgrenext.data.Book;
+import com.example.mybookshoppostgrenext.data.Book2Genre;
+import com.example.mybookshoppostgrenext.data.BooksPageDto;
 import com.example.mybookshoppostgrenext.data.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -21,6 +22,7 @@ public class GenresPageController {
     private BookService bookService;
     private AuthorService authorService;
     private GenreService genreService;
+    private Integer genre_old = 0;
 
     @Autowired
     public GenresPageController(BookService bookService, AuthorService authorService, GenreService genreService) {
@@ -51,10 +53,29 @@ public class GenresPageController {
 
     @GetMapping("/slug/{gen}")
     public String genreSlugPage(@PathVariable("gen") Integer gen,Model model){
+        genre_old = gen;
         model.addAttribute("gen",genreService.getGenreOfId(gen));
         //model.addAttribute("listBook",genreService.getListBookOfGenre(genreService.getMapBook2Genre(), genre));
-        model.addAttribute("listBook",genreService.getPageBookOfGenre(gen,0,5));
+        //model.addAttribute("listBook",genreService.getPageBookOfGenre(genre_old,0,5));
+        List<Book2Genre>book2GenreList = genreService.getPageBookOfGenre(genre_old,0,5).getContent();
+        List<Book>bookList = new ArrayList<>();
+        for(Book2Genre b2:book2GenreList){
+            bookList.add(b2.getBook());
+        }
+        model.addAttribute("listBook",bookList);
         model.addAttribute("count",genreService.getListBookOfGenre(genreService.getMapBook2Genre(), gen).size());
         return "/genres/slug.html";
+    }
+
+    @GetMapping("/slug/gen/{gen}")
+    @ResponseBody
+    public BooksPageDto getNextGenrePage(@RequestParam("offset") Integer offset,
+                                         @RequestParam("limit") Integer limit){
+        List<Book2Genre>book2GenreList = genreService.getPageBookOfGenre(genre_old,offset,limit).getContent();
+        List<Book>bookList = new ArrayList<>();
+        for(Book2Genre b2:book2GenreList){
+            bookList.add(b2.getBook());
+        }
+        return new BooksPageDto(bookList);
     }
 }
