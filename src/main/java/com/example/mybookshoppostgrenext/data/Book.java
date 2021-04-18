@@ -1,5 +1,8 @@
 package com.example.mybookshoppostgrenext.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -9,16 +12,20 @@ import java.util.List;
 
 @Entity
 @Table(name ="books")
+@ApiModel("data model of books entity")
 /*@AttributeOverride(name = "id",
 column = @Column(name = "id_author", nullable = false))*/
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(value = "id of books",position = 1)
     private Integer id;
     @Type(type="org.hibernate.type.LocalDateType")
-    private LocalDate pub_date;
-    private Byte is_bestseller;
+    @ApiModelProperty(value = "date enter of book to the database", position = 2)
+    private LocalDate date;
+    @ApiModelProperty(value = "1- book is bestseller, 0-it is not",position = 3)
+    private Byte isbestseller;
     private String slug;
     private String image;
     @Type(type="text")
@@ -27,33 +34,47 @@ public class Book {
     //@Transient
     @ManyToOne
     @JoinColumn(name = "id_author", referencedColumnName = "id")
+    @ApiModelProperty(value = "Author object", position = 5)
     private Authors author;
+
+    @ManyToOne
+    @JoinColumn(name = "idteg",referencedColumnName = "idteg")
+    private Tag tag;
+
     @OneToMany(mappedBy = "book")
+    @JsonIgnore
     private List<Book2Author>book2Authors = new ArrayList<>();
 
     @OneToMany(mappedBy = "book")
+    @JsonIgnore
     private List<Book_Review>bookReviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "book")
+    @JsonIgnore
     private List<Book2User>book2Users = new ArrayList<>();
 
     @OneToMany(mappedBy = "book")
+    @JsonIgnore
     private List<Book2Genre>book2Genres = new ArrayList<>();
 
     @OneToMany(mappedBy = "book")
+    @JsonIgnore
     private List<File_Download>file_downloads = new ArrayList<>();
 
     @OneToMany(mappedBy = "book")
+    @JsonIgnore
     private List<Balance_Transaction>balance_transactions = new ArrayList<>();
 
+    @ApiModelProperty(value = "title of the book", position = 4)
     private String title;
-    private String priceOld;
-    private String price;
+    private Double priceOld;
+    //@Column(name = "discount")
+    private Double price;
 
     public Book() {
     }
 
-    public Book(LocalDate pub_date, Byte is_bestseller,
+    /*public Book(LocalDate pub_date, Byte is_bestseller,
                 String slug, String image, String discription,
                 Authors author, List<Book2Author> book2Authors,
                 List<Book_Review> bookReviews, List<Book2User> book2Users,
@@ -74,26 +95,34 @@ public class Book {
         this.title = title;
         this.priceOld = priceOld;
         this.price = price;
-    }
+    }*/
 
     public Integer getId() {
         return id;
     }
 
-    public LocalDate getPub_date() {
-        return pub_date;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setPub_date(LocalDate pub_date) {
-        this.pub_date = pub_date;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
-    public Byte getIs_bestseller() {
-        return is_bestseller;
+    public Byte getIsbestseller() {
+        return isbestseller;
     }
 
-    public void setIs_bestseller(Byte is_bestseller) {
-        this.is_bestseller = is_bestseller;
+    public void setIsbestseller(Byte isbestseller) {
+        this.isbestseller = isbestseller;
+    }
+
+    public Tag getTag() {
+        return tag;
+    }
+
+    public void setTag(Tag tag) {
+        this.tag = tag;
     }
 
     public String getSlug() {
@@ -136,19 +165,19 @@ public class Book {
         this.title = title;
     }
 
-    public String getPriceOld() {
+    public Double getPriceOld() {
         return priceOld;
     }
 
-    public void setPriceOld(String priceOld) {
+    public void setPriceOld(Double priceOld) {
         this.priceOld = priceOld;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -206,7 +235,7 @@ public class Book {
                 ", id_author=" + author.getId() +
                 ", author='" + author.getAuthor() + '\'' +
                 ", title='" + title + '\'' +
-                ", priceOld='" + priceOld + '\'' +
-                ", price='" + price + '\'';
+                ", priceOld='" + priceOld.toString() + '\'' +
+                ", price='" + price.toString() + '\'';
     }
 }

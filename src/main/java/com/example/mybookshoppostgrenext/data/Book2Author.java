@@ -1,5 +1,7 @@
 package com.example.mybookshoppostgrenext.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 
@@ -12,9 +14,11 @@ public class Book2Author {
     //private Integer book_id;
     @ManyToOne
     @JoinColumn(name = "book_id", referencedColumnName = "id")
+    @JsonIgnore
     private Book book;
     @ManyToOne
     @JoinColumn(name = "author_id",referencedColumnName = "id")
+    @JsonIgnore
     private Authors authors;
     //private Integer author_id;
     private Integer sort_index;

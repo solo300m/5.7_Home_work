@@ -5,7 +5,7 @@ insert into genre(name,parent_id,slug) values ('Детективы',1,'l_ch');
 insert into genre(name,parent_id,slug) values ('Триллер',4,'l_ch');
 insert into genre(name,parent_id,slug) values ('Крутой детектив',4,'l_ch');
 insert into genre(name,parent_id,slug) values ('Иронический детектив',4,'l_ch');
-insert into genre(name,parent_id,slug) values ('Про маньаков',4,'l_ch');
+insert into genre(name,parent_id,slug) values ('Про маньяков',4,'l_ch');
 insert into genre(name,parent_id,slug) values ('Шпионский детектив',4,'l_ch');
 insert into genre(name,parent_id,slug) values ('Криминальный детектив',4,'l_ch');
 insert into genre(name,parent_id,slug) values ('Классический детектив',4,'l_ch');

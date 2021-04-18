@@ -1,13 +1,17 @@
 package com.example.mybookshoppostgrenext.Service;
 
-import com.example.mybookshoppostgrenext.Repositories.AuthorsRepository;
-import com.example.mybookshoppostgrenext.Repositories.BookRepository;
-import com.example.mybookshoppostgrenext.Repositories.CustomerRepository;
+import com.example.mybookshoppostgrenext.Repositories.*;
 import com.example.mybookshoppostgrenext.data.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import java.util.logging.Logger;
 
+import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -17,32 +21,105 @@ public class BookService {
     private AuthorsRepository authorsRepository;
     private CustomerRepository customerRepository;
     private HibernateService hibernateService;
+    private TegsRepository tegsRepository;
+    private GenreRepository genreRepository;
 
 
-    public BookService(JdbcTemplate jdbcTemplate, BookRepository bookRepository, AuthorsRepository authorsRepository, CustomerRepository customerRepository, HibernateService hibernateService) {
+    public BookService(JdbcTemplate jdbcTemplate, BookRepository bookRepository, AuthorsRepository authorsRepository, CustomerRepository customerRepository, HibernateService hibernateService, TegsRepository tag, GenreRepository genreRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.bookRepository = bookRepository;
         this.authorsRepository = authorsRepository;
         this.customerRepository = customerRepository;
         this.hibernateService = hibernateService;
+        this.tegsRepository = tag;
+        this.genreRepository = genreRepository;
     }
 
     public List<Book> getBookData(){
         List<Book>books = bookRepository.findAll();
-        /*List<Authors> authors = authorsRepository.findAll();
-        for(Book b:books){
-            for(Authors a: authors){
-                if(b.getId_author()==a.getId())
-                    b.setAuthor(a.getAuthor());
-            }
-        }*/
-        //List<Authors>b2 = authorsRepository.customAuthorsAll();
-        /*for(Book b : books)
-            Logger.getLogger(BookService.class.getName()).info(b.toString());*/
-        //List<Book2Authors>test2 = hibernateService.getBookData2();
+
         return books;
     }
 
+    public List<Book> getBooksByAuthor(String authorName){
+        return bookRepository.findBooksByAuthorAuthorContaining(authorName);
+    }
+    public List<Book> getBooksByTitle(String title){
+        return bookRepository.findBooksByTitleContaining(title);
+    }
+    public List<Book> getBooksWithPriceBetween(Integer min, Integer max){
+        return bookRepository.findBooksByPriceOldBetween(min,max);
+    }
+    public List<Book> getBooksWithPrice(Integer price){
+        return bookRepository.findBooksByPriceOldIs(price);
+    }
+    public List<Book> getBooksWithMaxPrice(){
+        return bookRepository.getBooksWithMaxDiscount();
+    }
+
+    public List<Book> getBestsellers(){
+        return bookRepository.getBestsellers();
+    }
+
+    public Page<Book> getPageOfRecommendedBooks(Integer offset, Integer limit){
+        Pageable nextPage = PageRequest.of(offset,limit);
+        return bookRepository.findAll(nextPage);
+    }
+
+    public Page<Book> getPageOfNewBooks(Integer offset, Integer limit){
+        LocalDate now = LocalDate.now();
+        LocalDate min = now.minusDays(30L);
+        Pageable nextPage = PageRequest.of(offset,limit);
+        return bookRepository.findBooksByDateBetween(min,now,nextPage);
+    }
+    public List<Book> getListOfNewBooks(){
+        LocalDate now = LocalDate.now();
+        LocalDate min = now.minusDays(30L);
+        return bookRepository.findBooksByDateBetween(min,now);
+    }
+
+    public Page<Book> getPageOfBestseller(Integer offset, Integer limit){
+        Pageable nextPage = PageRequest.of(offset,limit);
+        Byte num = new Byte((byte) 1);
+        return bookRepository.findBooksByIsbestsellerEquals(num,nextPage);
+    }
+
+    public Page<Book> getPageOfSearchResultBooks(String searchWorld, Integer offset, Integer limit){
+        Pageable nextPage = PageRequest.of(offset,limit);
+        return bookRepository.findBooksByTitleContaining(searchWorld,nextPage);
+    }
+
+    public List<Tag> getTegs(){
+        return tegsRepository.findAll();
+    }
+
+    public String getTegName(Integer teg){
+        return tegsRepository.selectTag(teg).getTegName();
+    }
+
+    public List<Book> getBookOfTeg(Integer id){
+        return bookRepository.selectBookIdTag(id);
+    }
+
+    public Page<Book> getPageOfSearchBooksTeg(Integer teg, Integer offset, Integer limit){
+        Pageable nextPage = PageRequest.of(offset,limit);
+        return bookRepository.findBooksByTagIdteg(teg,nextPage);
+    }
+
+    public Map<Tag,List<Book>> getMapTegs(List<Book>bookList){
+        Map<Tag,List<Book>> treeMap;
+        treeMap = bookList.stream().collect(Collectors.groupingBy(Book::getTag));
+        /*List<Tag>tagList = getTegs();
+        for(Tag t:tagList){
+            int count = treeMap.get(t).size();
+            Logger.getLogger(BookService.class.getName()).info("Ключ "+t.getTegName()+" количество "+treeMap.get(t).size());
+        }*/
+        return treeMap;
+    }
+
+    public List<Genre> getGenreAll(){
+        return genreRepository.findAll();
+    }
     //Замена на функцию из BookRepository
     /*public List<Book> getBookData() {
        List<Book> books = jdbcTemplate.query("SELECT books.id, id_author, price, price_old, title, author\n" +

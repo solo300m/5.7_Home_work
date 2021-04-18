@@ -2,10 +2,11 @@ package com.example.mybookshoppostgrenext.data;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 @Entity
 @Table(name = "genre")
-public class Genre {
+public class Genre implements Comparable<Genre> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -50,4 +51,15 @@ public class Genre {
     public void setName(String name) {
         this.name = name;
     }
+
+    public int compareTo(Genre o){
+        if(this.getId()>o.getId())
+            return 1;
+        else if(this.getId()==o.getId())
+            return 0;
+        else
+            return -1;
+    }
+
+
 }

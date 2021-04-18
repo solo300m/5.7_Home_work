@@ -10,12 +10,12 @@ public class Book2Genre {
     private Integer id;
     //private Integer book_id;
     @ManyToOne
-    @JoinColumn(name = "book_id",referencedColumnName = "id")
+    @JoinColumn(name = "bookid",referencedColumnName = "id")
     private Book book;
     //private Integer genre_id;
 
     @ManyToOne
-    @JoinColumn(name = "genre_id",referencedColumnName = "id")
+    @JoinColumn(name = "genreid",referencedColumnName = "id")
     private Genre genre;
 
 

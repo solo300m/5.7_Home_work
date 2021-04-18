@@ -23,11 +23,14 @@
                     </div>
                     <div class="Header-search">
                         <div class="search">
-                            <form class="form form_search" th:action="@{/search}"  th:method="get" data-searchlimit="20"><!--th:action="@{/search}" th:object="${foundAuthor}"-->
-                                <!--id="query"--><input class="search-input"  th:name="found" type="text"
-                                                        th:placeholder="#{searchbar.placeholder}" placeholder="Search over 30 million book titles" /><!--th:field="*{fName}"-->
-                                <button class="search-button" type="submit" name="search" id="search" th:href="@{/search/{found}(found = found)}" th:utext="#{topbar.found}">Поиск
-                                </button>
+                            <form class="form form_search"  th:method="get" data-searchlimit="20" th:object="${searchWordDto}" ><!--th:action="@{/search}" th:object="${foundAuthor}"-->
+                                <!--id="query"-->
+<!--                                th:object="${searchWordDto}"-->
+                                <input class="search-input"  name="found" type="text"
+                                       th:placeholder="#{searchbar.placeholder}" placeholder="Search over 30 million book titles" th:name="${example}" /><!--th:field="*{fName}"-->
+<!--                                <button class="search-button" type="submit" name="search" id="search" th:href="@{/search/{found}(found = found)}" th:utext="#{topbar.found}">Поиск-->
+<!--                                </button>-->
+                                <button class="search-button" type="submit" name="search" id="search1" th:href="@{/search/{searchWord}(searchWord = example)}" th:utext="#{topbar.foundT}">Поиск</button>
                             </form>
                         </div>
                     </div>
