@@ -98,18 +98,23 @@
         <h1 class="Middle-title">Жанры
         </h1>
         <div class="Section">
-          <div class="Tags Tags_genres">
+          <div class="Tags Tags_genres" th:object="${searchIdDto}">
             <th:block th:each="genr : ${genre}" th:if="${genr.getParent_id() == 0}">
                 <div class="Tags Tags_embed">
                   <div class="Tags-title">
-                    <div class="Tag"><a th:href="@{/genres/slug/{genre}(genre=${genr.getId()})}" th:text="${genr.getName()}+' ('+${b2g.get(genr).size()}+')'">Лёгкое чтение<span class="undefined-amount">(15638)</span></a>
+                    <div class="Tag"><a th:href="@{/books/{genre}(genre=${genr.getId()})}"
+                                        th:field="*{idParam}"
+                                        th:text="${genr.getName()}+' ('+${b2g.get(genr).size()}+')'">Лёгкое чтение<span class="undefined-amount">(15638)</span></a>
+
                       <div class="Tags"></div>
                         <div class="Tags" th:each="genr2 : ${genre}" th:if="${genr2.getParent_id()} == ${genr.getId()}">
-                          <div class="Tag" ><a th:href="@{/genres/slug/{genre}(genre=${genr2.getId()})}" th:text="${genr2.getName()}+' ('+${b2g.get(genr2).size()}+')'">Лёгкое чтение<span class="undefined-amount">(15638)</span></a></div>
-                          <div class="Tags"></div>
-                            <div class="Tags Tag-amount" th:each="genr3 : ${genre}" th:if="${genr3.getParent_id()} == ${genr2.getId()}">
+                          <div class="Tag" ><a th:href="@{/books/{genre}(genre=${genr2.getId()})}" th:field="*{idParam}" th:text="${genr2.getName()}+' ('+${b2g.get(genr2).size()}+')'">Лёгкое чтение<span class="undefined-amount">(15638)</span></a></div>
 
-                                <div class="Tag " ><a th:href="@{/genres/slug/{genre}(genre=${genr3.getId()})}" th:text="${genr3.getName()}+' ('+${b2g.get(genr3).size()}+')'">Лёгкое чтение<span class="undefined-amount">(15638)</span></a>
+                          <div class="Tags"></div>
+                            <div class="Tags Tag-amount" th:each="genr3 : ${genre}"  th:if="${genr3.getParent_id()} == ${genr2.getId()}">
+
+                                <div class="Tag " ><a th:href="@{/books/{genre}(genre=${genr3.getId()})}" th:field="*{idParam}" th:text="${genr3.getName()}+' ('+${b2g.get(genr3).size()}+')'">Лёгкое чтение<span class="undefined-amount">(15638)</span></a>
+
                                 </div>
 
                             </div>

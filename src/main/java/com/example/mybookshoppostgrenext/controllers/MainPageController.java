@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 
 @Controller
@@ -61,7 +63,9 @@ public class MainPageController {
 
     @GetMapping("/")
     public String reloadMainPage(Model model){
-        model.addAttribute("tagmap",bookService.getMapTegs(bookService.getBookData()));
+        Map<Tag,List<Book>> tagListMap = bookService.getMapTegs(bookService.getBookData());
+        model.addAttribute("tagmap",tagListMap);
+        model.addAttribute("avrg",bookService.averigMatTegListSize(tagListMap));
         Logger.getLogger(MainPageController.class.getName()).info("Reload great page!");
         return "index";
     }
@@ -90,7 +94,9 @@ public class MainPageController {
     @GetMapping("/bookshop")
     public String mainPage(Model model){
         model.addAttribute("book2author",hibernateService.getBookData2());
-        model.addAttribute("tagmap",bookService.getMapTegs(bookService.getBookData()));
+        Map<Tag,List<Book>> tagListMap = bookService.getMapTegs(bookService.getBookData());
+        model.addAttribute("tagmap",tagListMap);
+        model.addAttribute("avrg",bookService.averigMatTegListSize(tagListMap));
         Logger.getLogger(MainPageController.class.getName()).info("Hy, it is great page!");
         return "index";
     }

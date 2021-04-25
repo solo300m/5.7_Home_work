@@ -523,9 +523,30 @@
         <h2 class="Middle-title">Книги по тегам
         </h2>
 
-        <div class="Tags" id="tags" >
-          <div class="Tag" th:each="teg : ${tegs}"><a th:href="@{/bookshop/{teg}(teg=${teg.getIdTeg()})}" th:text="${teg.getTegName()}+' ('+${tagmap.get(teg).size()}+')'">современная литература</a>
-
+        <div class="Tag-amount" id="tags" style="margin-top: 5px" th:each="teg : ${tegs}">
+          <div  class="Tag" th:if="${tagmap.get(teg).size() - avrg} < '-10'" th:classappend="Tag_xs" >
+            <a th:href="@{/bookshop/{teg}(teg=${teg.getIdTeg()})}"
+               th:text="${teg.getTegName()}+' ('+${tagmap.get(teg).size()}+')'">
+              современная литература
+            </a>
+          </div>
+          <div  class="Tag" th:if="${tagmap.get(teg).size() - avrg} >= '-10' and ${tagmap.get(teg).size() - avrg} < '0' " th:classappend="Tag_sm" >
+            <a th:href="@{/bookshop/{teg}(teg=${teg.getIdTeg()})}"
+               th:text="${teg.getTegName()}+' ('+${tagmap.get(teg).size()}+')'">
+              современная литература
+            </a>
+          </div>
+          <div class="Tag" th:if="${tagmap.get(teg).size() - avrg} >= '0' and ${tagmap.get(teg).size() - avrg} < '5' " th:classappend="Tag_md" >
+            <a th:href="@{/bookshop/{teg}(teg=${teg.getIdTeg()})}"
+               th:text="${teg.getTegName()}+' ('+${tagmap.get(teg).size()}+')'">
+              современная литература
+            </a>
+          </div>
+          <div  class="Tag" th:if="${tagmap.get(teg).size() - avrg} >= '5'" th:classappend="Tag_lg" >
+            <a th:href="@{/bookshop/{teg}(teg=${teg.getIdTeg()})}"
+               th:text="${teg.getTegName()}+' ('+${tagmap.get(teg).size()}+')'">
+              современная литература
+            </a>
           </div>
 <!--          <div class="Tag Tag_sm"><a href="/tags/index.html">классическая литература</a>-->
 <!--          </div>-->

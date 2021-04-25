@@ -106,6 +106,15 @@ public class BookService {
         return bookRepository.findBooksByTagIdteg(teg,nextPage);
     }
 
+    public Integer averigMatTegListSize(Map<Tag,List<Book>>tagListMap){
+        Integer rezult = 0;
+        List<Tag>tagList = getTegs();
+        for(Tag tg:tagList){
+            rezult = rezult+tagListMap.get(tg).size();
+        }
+        rezult = (int)rezult / tagListMap.size();
+        return rezult;
+    }
     public Map<Tag,List<Book>> getMapTegs(List<Book>bookList){
         Map<Tag,List<Book>> treeMap;
         treeMap = bookList.stream().collect(Collectors.groupingBy(Book::getTag));
